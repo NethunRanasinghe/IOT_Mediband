@@ -18,13 +18,10 @@ void Detect_Fall(){
     // check if the magnitude of the gyro vector exceeds the threshold
       Serial.println("Fall detected!");
       // Activate Buzzer When a fall is detected
-      Siren_Buzz();
+      while(1 < 2){
+        Siren_Buzz();
+      }
   }
-  else{
-    Serial.println("No Fall detected!");
-  }
-
-  Serial.println("");
   delay(500);
 }
 

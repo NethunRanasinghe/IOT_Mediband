@@ -15,3 +15,7 @@ void Siren_Buzz() {
   Serial.println("Siren Stopped !");
   delay(1000);
   }
+
+void Buzz_Stop(){
+  noTone(buzzerPin);
+}
