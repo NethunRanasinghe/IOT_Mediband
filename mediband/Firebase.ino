@@ -13,6 +13,14 @@
 #include <NTPClient.h>
 #include <WiFiUdp.h>
 
+const long utcOffsetInSeconds = 19800;
+
+char daysOfTheWeek[7][12] = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
+String months[12]={"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
+WiFiUDP ntpUDP;
+NTPClient timeClient(ntpUDP, "pool.ntp.org", utcOffsetInSeconds);
+
+FirebaseData fbdo;
 FirebaseAuth auth;
 FirebaseConfig config;
 
