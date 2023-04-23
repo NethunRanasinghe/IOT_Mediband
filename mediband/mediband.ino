@@ -5,8 +5,8 @@ void setup() {
   Serial.begin(115200);
   
   Setup_FallSensor();
-  Setup_Hbeat_Sensor();
-  Setup_Firebase();
+  //Setup_Hbeat_Sensor();
+  //Setup_Firebase();
 }
 
 void loop() {
