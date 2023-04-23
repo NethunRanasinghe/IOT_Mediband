@@ -7,12 +7,13 @@
 #define DATABASE_URL "espfirebase-b20ba-default-rtdb.firebaseio.com"
 #define THRESHOLD_ACCEL 11 // accelerometer threshold for detecting a fall
 #define THRESHOLD_GYRO 11 // gyro threshold for detecting a fall
+#define buzzerPin D4 // Set the pin for the buzzer
 
 #include <Wire.h>
 #include "MAX30105.h"
 #include "heartRate.h"
 #include <Arduino.h>
-#include <ESP8266WiFi.h>
+// #include <ESP8266WiFi.h>
 #include <Firebase_ESP_Client.h>
 #include <addons/TokenHelper.h>
 #include <addons/RTDBHelper.h>
@@ -40,13 +41,10 @@ unsigned long dataMillis = 0;
 void setup() {
   pinMode(buzzerPin, OUTPUT);
   Serial.begin(115200);
-
-  //Heart Rate Monitor - Start
-  Setup_Hbeat_Sensor();
-  //Heart Rate Monitor - End
-  setup_firebase();
-  // Setup_Hbeat_Sensor();
+  
   Setup_FallSensor();
+  Setup_Hbeat_Sensor();
+  Setup_Firebase();
 }
 
 void loop() {

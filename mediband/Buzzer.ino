@@ -1,5 +1,3 @@
-#define buzzerPin D4 // Set the pin for the buzzer
-
 void Siren_Buzz() {
   // Generate a high-pitched siren sound
   Serial.println("Siren Started !");

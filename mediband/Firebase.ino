@@ -40,8 +40,8 @@ void Send_Data_To_Firebase(){
 }
 
 
-void setup_firebase(){
-      WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
+void Setup_Firebase(){
+     WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
 
     Serial.print("Connecting to Wi-Fi");
     unsigned long ms = millis();
