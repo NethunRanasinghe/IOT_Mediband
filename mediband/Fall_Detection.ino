@@ -1,3 +1,10 @@
+#define THRESHOLD_ACCEL 11 // accelerometer threshold for detecting a fall
+#define THRESHOLD_GYRO 11 // gyro threshold for detecting a fall
+
+#include <Adafruit_MPU6050.h>
+#include <Adafruit_Sensor.h>
+Adafruit_MPU6050 mpu;
+
 void Detect_Fall(){
   /* Get new sensor events with the readings */
   sensors_event_t a, g, temp;
