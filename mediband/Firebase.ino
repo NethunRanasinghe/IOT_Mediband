@@ -8,6 +8,7 @@
 #include <Arduino.h>
 #include <ESP8266WiFi.h>
 #include <Firebase_ESP_Client.h>
+#include <ArduinoJson.h>
 #include <addons/TokenHelper.h>
 #include <addons/RTDBHelper.h>
 #include <NTPClient.h>
@@ -23,6 +24,7 @@ NTPClient timeClient(ntpUDP, "pool.ntp.org", utcOffsetInSeconds);
 FirebaseData fbdo;
 FirebaseAuth auth;
 FirebaseConfig config;
+FirebaseJson firebaseJson;
 
 unsigned long dataMillis = 0;
 
@@ -94,8 +96,9 @@ void Send_Data_To_Firebase(String hrate){
         String path = "Devices/";
         path += auth.token.uid.c_str(); //<- user uid of current user that sign in with Emal/Password
         path += "/" + currentDate + "/";
-        Serial.printf("Set Record... %s\n", Firebase.RTDB.setString(&fbdo, path+"heartRate", hrate) ? "ok" : fbdo.errorReason().c_str());
-        Serial.printf("Set Record... %s\n", Firebase.RTDB.setString(&fbdo, path+"spo2", "90") ? "ok" : fbdo.errorReason().c_str());
-        Serial.printf("Set Record... %s\n", Firebase.RTDB.setString(&fbdo, path+"time", currentDate) ? "ok" : fbdo.errorReason().c_str());
+        firebaseJson.set("/heartRate",hrate);
+        firebaseJson.set("/spo2", 90);
+        firebaseJson.set("/time", currentDate);
+        Serial.printf("Set Record... %s\n", Firebase.RTDB.setJSON(&fbdo, path, &firebaseJson) ? "ok" : fbdo.errorReason().c_str());
 }
 }
