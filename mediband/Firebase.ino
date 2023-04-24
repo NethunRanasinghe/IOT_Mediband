@@ -102,3 +102,7 @@ void Send_Data_To_Firebase(String hrate){
         Serial.printf("Set Record... %s\n", Firebase.RTDB.setJSON(&fbdo, path, &firebaseJson) ? "ok" : fbdo.errorReason().c_str());
 }
 }
+
+void setFallDetection(){
+  Serial.printf("Set Record... %s\n", Firebase.RTDB.setInt(&fbdo, path, &firebaseJson) ? "ok" : fbdo.errorReason().c_str());
+}

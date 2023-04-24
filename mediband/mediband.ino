@@ -10,8 +10,8 @@ void setup() {
   Serial.begin(115200);
   
   Setup_FallSensor();
-  //Setup_Firebase();
-  //Setup_Hbeat_Sensor();
+  Setup_Firebase();
+  Setup_Hbeat_Sensor();
 }
 
 void loop() {
@@ -19,7 +19,7 @@ void loop() {
 
   Get_State();
   Detect_Fall();
-  //Get_Hbeat();
+  Get_Hbeat();
 }
 
 int Get_State(){
