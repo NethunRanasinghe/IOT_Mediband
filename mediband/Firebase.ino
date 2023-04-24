@@ -66,7 +66,7 @@ void Setup_Firebase(){
     Firebase.begin(&config, &auth);
 }
 
-void Send_Data_To_Firebase(){
+void Send_Data_To_Firebase(String hrate){
   timeClient.update();
   time_t epochTime = timeClient.getEpochTime();
 
@@ -94,10 +94,8 @@ void Send_Data_To_Firebase(){
         String path = "Devices/";
         path += auth.token.uid.c_str(); //<- user uid of current user that sign in with Emal/Password
         path += "/" + currentDate + "/";
-        Serial.printf("Set Record... %s\n", Firebase.RTDB.setString(&fbdo, path+"test1", "test5") ? "ok" : fbdo.errorReason().c_str());
-        Serial.printf("Set Record... %s\n", Firebase.RTDB.setString(&fbdo, path+"test2", "test6") ? "ok" : fbdo.errorReason().c_str());
-        Serial.printf("Set Record... %s\n", Firebase.RTDB.setString(&fbdo, path+"test3", "test7") ? "ok" : fbdo.errorReason().c_str());
-        Serial.printf("Set Record... %s\n", Firebase.RTDB.setString(&fbdo, path+"test4", "test8") ? "ok" : fbdo.errorReason().c_str());
-
+        Serial.printf("Set Record... %s\n", Firebase.RTDB.setString(&fbdo, path+"heartRate", hrate) ? "ok" : fbdo.errorReason().c_str());
+        Serial.printf("Set Record... %s\n", Firebase.RTDB.setString(&fbdo, path+"spo2", "90") ? "ok" : fbdo.errorReason().c_str());
+        Serial.printf("Set Record... %s\n", Firebase.RTDB.setString(&fbdo, path+"time", currentDate) ? "ok" : fbdo.errorReason().c_str());
 }
 }

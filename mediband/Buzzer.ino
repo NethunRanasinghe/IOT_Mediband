@@ -1,6 +1,7 @@
 #define buzzerPin D4 // Set the pin for the buzzer
 
 void Siren_Buzz() {
+
   // Generate a high-pitched siren sound
   Serial.println("Siren Started !");
   for (int i = 2000; i < 5000; i++) {
@@ -12,10 +13,10 @@ void Siren_Buzz() {
   noTone(buzzerPin);
   
   // Wait for a short time before starting again
-  Serial.println("Siren Stopped !");
   delay(1000);
   }
 
 void Buzz_Stop(){
   noTone(buzzerPin);
+  Serial.println("Siren Stopped !");
 }

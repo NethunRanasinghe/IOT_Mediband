@@ -33,15 +33,18 @@ void Get_Hbeat(){
       for (byte x = 0 ; x < RATE_SIZE ; x++)
         beatAvg += rates[x];
       beatAvg /= RATE_SIZE;
+
+      Send_Data_To_Firebase(""+beatAvg);
+      delay(10000);
     }
   }
 
-  Serial.print("IR=");
-  Serial.print(irValue);
-  Serial.print(", BPM=");
-  Serial.print(beatsPerMinute);
-  Serial.print(", Avg BPM=");
-  Serial.print(beatAvg);
+  // Serial.print("IR=");
+  // Serial.print(irValue);
+  // Serial.print(", BPM=");
+  // Serial.print(beatsPerMinute);
+  // Serial.print(", Avg BPM=");
+  // Serial.print(beatAvg);
 
   if (irValue < 50000)
     Serial.print(" No finger?");

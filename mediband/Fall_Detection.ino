@@ -6,20 +6,29 @@
 Adafruit_MPU6050 mpu;
 
 void Detect_Fall(){
+  int Button_State = 0;
+  Button_State = Get_State();
+
   /* Get new sensor events with the readings */
   sensors_event_t a, g, temp;
   mpu.getEvent(&a, &g, &temp);
 
   float accel_mag=sqrt(pow(a.acceleration.x,2)+pow(a.acceleration.y,2)+pow(a.acceleration.z,2));
-
   float gyro_mag=sqrt(pow(g.gyro.x,2)+pow(g.gyro.y,2)+pow(g.gyro.z,2));
 
   if ((accel_mag > THRESHOLD_ACCEL)&&(gyro_mag > THRESHOLD_GYRO)) {
     // check if the magnitude of the gyro vector exceeds the threshold
       Serial.println("Fall detected!");
       // Activate Buzzer When a fall is detected
-      while(1 < 2){
+      while(Button_State == HIGH){
         Siren_Buzz();
+
+        Serial.begin(Button_State);
+
+        if(Button_State == LOW){
+          Buzz_Stop();
+          break;
+        }
       }
   }
   delay(500);
@@ -101,5 +110,4 @@ void Setup_FallSensor(){
   }
 
   Serial.println("");
-  // delay(100);
 }
