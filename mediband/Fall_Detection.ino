@@ -1,114 +1,81 @@
-#define THRESHOLD_ACCEL 7 // accelerometer threshold for detecting a fall
-#define THRESHOLD_GYRO 7 // gyro threshold for detecting a fall
+#include <DFRobot_BMI160.h>
 
-#include <Adafruit_MPU6050.h>
-#include <Adafruit_Sensor.h>
-Adafruit_MPU6050 mpu;
+#define buttonPin D3  // Set the pin for the button
 
-void Detect_Fall(){
-  int Button_State = 1;
-  Button_State = Get_State();
+int buttonState = 0;  // Flag to track button state
 
-  /* Get new sensor events with the readings */
-  sensors_event_t a, g, temp;
-  mpu.getEvent(&a, &g, &temp);
+DFRobot_BMI160 bmi160;
+const int8_t i2c_addr = 0x69;
 
-  float accel_mag=sqrt(pow(a.acceleration.x,2)+pow(a.acceleration.y,2)+pow(a.acceleration.z,2));
-  float gyro_mag=sqrt(pow(g.gyro.x,2)+pow(g.gyro.y,2)+pow(g.gyro.z,2));
+void Setup_Fall() {
+  Serial.begin(115200);
 
-  if ((accel_mag > THRESHOLD_ACCEL)&&(gyro_mag > THRESHOLD_GYRO)) {
-    // check if the magnitude of the gyro vector exceeds the threshold
-      Serial.println("Fall detected!");
-      setFallDetection();
-      // Activate Buzzer When a fall is detected
-      while(Button_State == HIGH){
+  pinMode(buttonPin, INPUT_PULLUP); // Set the button pin as input with internal pull-up resistor
+
+  //init the hardware bmin160
+  if (bmi160.softReset() != BMI160_OK) {
+    Serial.println("reset false");
+    while (1)
+      ;
+  }
+
+  //set and init the bmi160 i2c address
+  if (bmi160.I2cInit(i2c_addr) != BMI160_OK) {
+    Serial.println("init false");
+    while (1);
+  }
+}
+
+void Detect_Fall() {
+  float accMagnitude = 0;
+  float angVelMagnitude = 0;
+
+  buttonState = digitalRead(buttonPin);
+
+  int i = 0;
+  int rslt;
+  int16_t accelGyro[6] = { 0 };
+
+  const float ACC_THRESHOLD = 2.5;     // Acceleration threshold for fall detection
+  const float ANG_VEL_THRESHOLD = 110;  // Angular velocity threshold for fall detection
+
+  //get both accel and gyro data from bmi160
+  //parameter accelGyro is the pointer to store the data
+  rslt = bmi160.getAccelGyroData(accelGyro);
+  if (rslt == 0) {
+
+    double GyroX = accelGyro[0] * 3.14 / 180.0;
+    double GyroY = accelGyro[1] * 3.14 / 180.0;
+    double GyroZ = accelGyro[2] * 3.14 / 180.0;
+
+    double AccelX = accelGyro[3] / 16384.0;
+    double AccelY = accelGyro[4] / 16384.0;
+    double AccelZ = accelGyro[5] / 16384.0;
+
+    accMagnitude = sqrt(sq(AccelX + AccelY + AccelZ));
+
+    // Calculate angular velocity magnitude
+    angVelMagnitude = sqrt(sq(GyroX + GyroY + GyroZ));
+    // Serial.println(accMagnitude);
+    // Serial.println(angVelMagnitude);
+
+
+    // Check for fall condition
+    if (accMagnitude > ACC_THRESHOLD && angVelMagnitude > ANG_VEL_THRESHOLD) {
+      Serial.println("State Abnormal : Fall detected !");
+      while (true) {
+        buttonState = digitalRead(buttonPin);
+        Serial.println(buttonState);
         Siren_Buzz();
-
-        Serial.begin(Button_State);
-
-        if(Button_State == LOW){
+        if (buttonState == LOW) { 
+          Serial.println("Buzzer Stopped !"); // Check if button is pressed
           Buzz_Stop();
           break;
         }
       }
-  }
-  delay(500);
-}
-
-
-void Setup_FallSensor(){
-  while (!Serial)
-    delay(10); // will pause Zero, Leonardo, etc until serial console opens
-
-  Serial.println("Adafruit MPU6050 test!");
-
-  // Try to initialize!
-  if (!mpu.begin()) {
-    Serial.println("Failed to find MPU6050 chip");
-    while (1) {
-      delay(10);
+    } else {
+      // Buzz_Stop();
+      Serial.println("State : Normal !");
     }
   }
-  Serial.println("MPU6050 Found!");
-
-  mpu.setAccelerometerRange(MPU6050_RANGE_8_G);
-  Serial.print("Accelerometer range set to: ");
-  switch (mpu.getAccelerometerRange()) {
-  case MPU6050_RANGE_2_G:
-    Serial.println("+-2G");
-    break;
-  case MPU6050_RANGE_4_G:
-    Serial.println("+-4G");
-    break;
-  case MPU6050_RANGE_8_G:
-    Serial.println("+-8G");
-    break;
-  case MPU6050_RANGE_16_G:
-    Serial.println("+-16G");
-    break;
-  }
-  mpu.setGyroRange(MPU6050_RANGE_500_DEG);
-  Serial.print("Gyro range set to: ");
-  switch (mpu.getGyroRange()) {
-  case MPU6050_RANGE_250_DEG:
-    Serial.println("+- 250 deg/s");
-    break;
-  case MPU6050_RANGE_500_DEG:
-    Serial.println("+- 500 deg/s");
-    break;
-  case MPU6050_RANGE_1000_DEG:
-    Serial.println("+- 1000 deg/s");
-    break;
-  case MPU6050_RANGE_2000_DEG:
-    Serial.println("+- 2000 deg/s");
-    break;
-  }
-
-  mpu.setFilterBandwidth(MPU6050_BAND_21_HZ);
-  Serial.print("Filter bandwidth set to: ");
-  switch (mpu.getFilterBandwidth()) {
-  case MPU6050_BAND_260_HZ:
-    Serial.println("260 Hz");
-    break;
-  case MPU6050_BAND_184_HZ:
-    Serial.println("184 Hz");
-    break;
-  case MPU6050_BAND_94_HZ:
-    Serial.println("94 Hz");
-    break;
-  case MPU6050_BAND_44_HZ:
-    Serial.println("44 Hz");
-    break;
-  case MPU6050_BAND_21_HZ:
-    Serial.println("21 Hz");
-    break;
-  case MPU6050_BAND_10_HZ:
-    Serial.println("10 Hz");
-    break;
-  case MPU6050_BAND_5_HZ:
-    Serial.println("5 Hz");
-    break;
-  }
-
-  Serial.println("");
 }
