@@ -34,7 +34,7 @@ void Get_Hbeat(){
         beatAvg += rates[x];
       beatAvg /= RATE_SIZE;
 
-      Send_Data_To_Firebase(""+beatAvg);
+      Send_Data_To_Firebase(beatAvg);
       delay(10000);
     }
   }

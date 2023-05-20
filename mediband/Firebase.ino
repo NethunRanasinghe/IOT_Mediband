@@ -1,5 +1,5 @@
-#define WIFI_SSID "Dialog 4G 827"
-#define WIFI_PASSWORD "VillAiN248"
+#define WIFI_SSID "SLT_FIBRE.."
+#define WIFI_PASSWORD "ud78246#"
 #define API_KEY "AIzaSyAWtQRLx_Sovaq0VVuuv980hgz7IPlJ_8E"
 #define USER_EMAIL "testuser1@test.com"
 #define USER_PASSWORD "test12"
@@ -68,7 +68,7 @@ void Setup_Firebase(){
     Firebase.begin(&config, &auth);
 }
 
-void Send_Data_To_Firebase(String hrate){
+void Send_Data_To_Firebase(int hrate){
   timeClient.update();
   time_t epochTime = timeClient.getEpochTime();
 
@@ -94,8 +94,8 @@ void Send_Data_To_Firebase(String hrate){
     {
         dataMillis = millis();
         String path = "Devices/";
-        path += auth.token.uid.c_str(); //<- user uid of current user that sign in with Emal/Password
-        path += "/" + currentDate + "/";
+        path += auth.token.uid.c_str(); 
+        path += "/" + String(epochTime) + "/";
         firebaseJson.set("/heartRate",hrate);
         firebaseJson.set("/spo2", 90);
         firebaseJson.set("/time", currentDate);
@@ -104,5 +104,5 @@ void Send_Data_To_Firebase(String hrate){
 }
 
 void setFallDetection(){
-  Serial.printf("Set Record... %s\n", Firebase.RTDB.setInt(&fbdo, path, &firebaseJson) ? "ok" : fbdo.errorReason().c_str());
+  Serial.printf("Set Record... %s\n", Firebase.RTDB.setInt(&fbdo, "Users/OKBgM38OzbbEzgmKG9ZWBYoO7qD2/fallStatus", 0) ? "ok" : fbdo.errorReason().c_str());
 }

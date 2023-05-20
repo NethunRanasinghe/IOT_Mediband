@@ -9,17 +9,19 @@ void setup() {
 
   Serial.begin(115200);
   
-  Setup_FallSensor();
+  //Setup_FallSensor();
   Setup_Firebase();
-  Setup_Hbeat_Sensor();
+  //Setup_Hbeat_Sensor();
 }
 
 void loop() {
   gswitchState = digitalRead(pushbtn);
-
+  int hbeatnew = random(65,74);
   Get_State();
-  Detect_Fall();
-  Get_Hbeat();
+  //Detect_Fall();
+  //Get_Hbeat();
+
+  Send_Data_To_Firebase(hbeatnew);
 }
 
 int Get_State(){

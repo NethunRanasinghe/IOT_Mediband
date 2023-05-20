@@ -1,12 +1,12 @@
-#define THRESHOLD_ACCEL 10 // accelerometer threshold for detecting a fall
-#define THRESHOLD_GYRO 10 // gyro threshold for detecting a fall
+#define THRESHOLD_ACCEL 7 // accelerometer threshold for detecting a fall
+#define THRESHOLD_GYRO 7 // gyro threshold for detecting a fall
 
 #include <Adafruit_MPU6050.h>
 #include <Adafruit_Sensor.h>
 Adafruit_MPU6050 mpu;
 
 void Detect_Fall(){
-  int Button_State = 0;
+  int Button_State = 1;
   Button_State = Get_State();
 
   /* Get new sensor events with the readings */
@@ -19,6 +19,7 @@ void Detect_Fall(){
   if ((accel_mag > THRESHOLD_ACCEL)&&(gyro_mag > THRESHOLD_GYRO)) {
     // check if the magnitude of the gyro vector exceeds the threshold
       Serial.println("Fall detected!");
+      setFallDetection();
       // Activate Buzzer When a fall is detected
       while(Button_State == HIGH){
         Siren_Buzz();
