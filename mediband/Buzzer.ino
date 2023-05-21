@@ -3,7 +3,7 @@
 void Siren_Buzz() {
 
   // Generate a high-pitched siren sound
-  Serial.println("Siren Started !");
+  Serial.println("Buzzer : Siren Started !");
   for (int i = 2000; i < 5000; i++) {
     tone(buzzerPin, i);
     delay(1);
@@ -18,5 +18,5 @@ void Siren_Buzz() {
 
 void Buzz_Stop(){
   noTone(buzzerPin);
-  Serial.println("Siren Stopped !");
+  Serial.println("Buzzer : Siren Stopped !");
 }

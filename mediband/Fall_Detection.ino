@@ -8,20 +8,18 @@ DFRobot_BMI160 bmi160;
 const int8_t i2c_addr = 0x69;
 
 void Setup_Fall() {
-  Serial.begin(115200);
-
   pinMode(buttonPin, INPUT_PULLUP); // Set the button pin as input with internal pull-up resistor
 
   //init the hardware bmin160
   if (bmi160.softReset() != BMI160_OK) {
-    Serial.println("reset false");
+    Serial.println("MPU6050 : reset false");
     while (1)
       ;
   }
 
   //set and init the bmi160 i2c address
   if (bmi160.I2cInit(i2c_addr) != BMI160_OK) {
-    Serial.println("init false");
+    Serial.println("MPU6050 : init false");
     while (1);
   }
 }
@@ -56,26 +54,24 @@ void Detect_Fall() {
 
     // Calculate angular velocity magnitude
     angVelMagnitude = sqrt(sq(GyroX + GyroY + GyroZ));
-    // Serial.println(accMagnitude);
-    // Serial.println(angVelMagnitude);
-
 
     // Check for fall condition
     if (accMagnitude > ACC_THRESHOLD && angVelMagnitude > ANG_VEL_THRESHOLD) {
-      Serial.println("State Abnormal : Fall detected !");
+      Serial.println("MPU6050 : State Abnormal : Fall detected !");
       while (true) {
         buttonState = digitalRead(buttonPin);
         Serial.println(buttonState);
+        setFallDetection();
         Siren_Buzz();
         if (buttonState == LOW) { 
-          Serial.println("Buzzer Stopped !"); // Check if button is pressed
+          Serial.println("MPU6050 : Buzzer Stopped !"); // Check if button is pressed
           Buzz_Stop();
           break;
         }
       }
     } else {
       // Buzz_Stop();
-      Serial.println("State : Normal !");
+      Serial.println("MPU6050 : State : Normal !");
     }
   }
 }

@@ -35,33 +35,30 @@ void Get_Hbeat(){
       beatAvg /= RATE_SIZE;
 
       Send_Data_To_Firebase(beatAvg);
+
+      if(beatAvg > 100 || beatAvg < 60){
+        setFallDetection();
+      }
+
       delay(10000);
     }
   }
 
-  // Serial.print("IR=");
-  // Serial.print(irValue);
-  // Serial.print(", BPM=");
-  // Serial.print(beatsPerMinute);
-  // Serial.print(", Avg BPM=");
-  // Serial.print(beatAvg);
+  Serial.print(", Avg BPM=");
+  Serial.println(beatAvg);
 
-  if (irValue < 50000)
-    Serial.print(" No finger?");
-
-  Serial.println();
-  }
-
+}
 
 void Setup_Hbeat_Sensor(){
-    Serial.println("Initializing...");
+  Serial.println("MAX30102 : Initializing...");
   // Initialize sensor
-  if (!particleSensor.begin(Wire, I2C_SPEED_FAST)) //Use default I2C port, 400kHz speed
+  Wire.begin(D5, D6);
+  if (!particleSensor.begin(Wire, I2C_SPEED_FAST)) //I2C port D4 D5, 400kHz speed
   {
-    Serial.println("MAX30105 was not found. Please check wiring/power. ");
+    Serial.println("MAX30102 :  was not found. Please check wiring/power. ");
     while (1);
   }
-  Serial.println("Place your index finger on the sensor with steady pressure.");
+  Serial.println("MAX30102 : Place your index finger on the sensor with steady pressure.");
 
   particleSensor.setup(); //Configure sensor with default settings
   particleSensor.setPulseAmplitudeRed(0x0A); //Turn Red LED to low to indicate sensor is running
