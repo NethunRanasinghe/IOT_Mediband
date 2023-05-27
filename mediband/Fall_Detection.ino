@@ -9,7 +9,7 @@ const int8_t i2c_addr = 0x69;
 
 void Setup_Fall() {
   pinMode(buttonPin, INPUT_PULLUP); // Set the button pin as input with internal pull-up resistor
-
+  Wire.begin(D1,D2);
   //init the hardware bmin160
   if (bmi160.softReset() != BMI160_OK) {
     Serial.println("MPU6050 : reset false");
