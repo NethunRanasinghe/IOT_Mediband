@@ -2,6 +2,8 @@
 #include "MAX30105.h"
 #include "heartRate.h"
 
+const int8_t i2c_addr_heart = 0x57;
+
 MAX30105 particleSensor;
 
 const byte RATE_SIZE = 4; //Increase this for more averaging. 4 is good.
@@ -46,14 +48,12 @@ void Get_Hbeat(){
 
   Serial.print(", Avg BPM=");
   Serial.println(beatAvg);
-
 }
 
 void Setup_Hbeat_Sensor(){
   Serial.println("MAX30102 : Initializing...");
   // Initialize sensor
-  Wire.begin(D5, D6);
-  if (!particleSensor.begin(Wire, I2C_SPEED_FAST)) //I2C port D4 D5, 400kHz speed
+  if (!particleSensor.begin(Wire, I2C_SPEED_FAST, i2c_addr_heart)) //Default I2C Bus, Different Address 400kHz speed
   {
     Serial.println("MAX30102 :  was not found. Please check wiring/power. ");
     while (1);

@@ -5,11 +5,11 @@
 int buttonState = 0;  // Flag to track button state
 
 DFRobot_BMI160 bmi160;
-const int8_t i2c_addr = 0x69;
+const int8_t i2c_addr_acc = 0x69;
 
 void Setup_Fall() {
   pinMode(buttonPin, INPUT_PULLUP); // Set the button pin as input with internal pull-up resistor
-  Wire.begin(D1,D2);
+  
   //init the hardware bmin160
   if (bmi160.softReset() != BMI160_OK) {
     Serial.println("MPU6050 : reset false");
@@ -18,7 +18,7 @@ void Setup_Fall() {
   }
 
   //set and init the bmi160 i2c address
-  if (bmi160.I2cInit(i2c_addr) != BMI160_OK) {
+  if (bmi160.I2cInit(i2c_addr_acc) != BMI160_OK) {
     Serial.println("MPU6050 : init false");
     while (1);
   }
