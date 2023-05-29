@@ -1,5 +1,5 @@
-#define WIFI_SSID "SLT_FIBRE.."
-#define WIFI_PASSWORD "ud78246#"
+#define WIFI_SSID "SLT"
+#define WIFI_PASSWORD "14681462"
 #define API_KEY "AIzaSyAWtQRLx_Sovaq0VVuuv980hgz7IPlJ_8E"
 #define USER_EMAIL "testuser1@test.com"
 #define USER_PASSWORD "test12"
