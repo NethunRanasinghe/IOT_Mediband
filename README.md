@@ -1,5 +1,19 @@
 # IOT_Mediband
 
+# User guide
+• This IOT medical band compromises of several sensors and this Medi band should be worn by the elders 
+on their wrist.
+• The band contains sensors that measure users’ blood oxygen level, heart rate, temperature and detect the 
+fallings.
+• The medical band should be charged before use by using the charging cable.
+• The band will regularly notify the vital signs and make an alert when an abnormality occurs.
+• The readings taken from the medical band can be viewed using the admin panel. Measurements taken 
+from Medi band of each elder is shown separately in the admin panel.
+• If a fall happens the medical band would make a beep sound. if that sound occurred due to a mistake, 
+click on the button on the medical band.
+• When maintaining the medical band keep it clean and dry. Do not be exposed to high temperatures and 
+water.
+• The elder’s personal data will be secured in throughout this entire process
 ## Scope
 The IOT Medi band is designed to monitor the heart rate, blood oxygen level and temperature of elders in elderly homes
 and if the reading from the device is abnormal the healthcare providers get a quick alert. Also, if an elder falls the Medi
